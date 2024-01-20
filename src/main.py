@@ -6,6 +6,7 @@ from database.queries import getTables, getTableColumns, getTableReferences
 from mdDocsGenerator import createH2, createBreak, createTable, createBulletPoint, createSelfReference
 
 
+DOCS_SAVE_LOC = '../output/dbDocs.md'
 COL_SUMMARY_TABLE_TXT = 'Table Columns'
 COL_TABLE_COLS = ['Columns', 'Data Type']
 REF_SUMMARY_TABLE_TXT = 'Table References'
@@ -30,7 +31,7 @@ db = DB(PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW)
 conn = db.connect()
 
 tables = getTables(db)
-file = open("../output/referencingTables.md", "w")
+file = open(DOCS_SAVE_LOC, "w")
 for table in tables:
     table = table[0]
 

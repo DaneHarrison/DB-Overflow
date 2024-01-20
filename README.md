@@ -1,6 +1,6 @@
 <div align='center'>
 
-# DB-Overflow
+# DB-Overflow (PostgreSQL)
 ### Because production databases are just *slightly* bigger
 
 </div>
@@ -10,11 +10,15 @@
 
 #### Sample picture:
 
+___
+
 <div align='right'>
 
 ![](./output/sample.png)
 
 </div>
+
+____
 
 <br>
 
