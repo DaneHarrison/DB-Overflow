@@ -8,6 +8,8 @@
 <br>
 <br>
 
+#### Sample picture:
+
 <div align='right'>
 
 ![](./output/sample.png)
