@@ -28,19 +28,15 @@ def getTableColumns(db, tableName):
 
 def getTableReferences(db, tableName):
     query = sq.text(f'''
-        SELECT
-            con.table_name AS table_with_foreign_key,
-            kcu.column_name AS column_with_foreign_key,
-            ccu.table_name AS referenced_table_name,
-            ccu.column_name AS referenced_column_name
-        
-        FROM information_schema.constraint_column_usage AS kcu
-        
-        JOIN information_schema.referential_constraints AS rc ON kcu.constraint_name = rc.constraint_name
-        JOIN information_schema.table_constraints AS con ON kcu.constraint_name = con.constraint_name
-        JOIN information_schema.constraint_column_usage AS ccu ON rc.unique_constraint_name = ccu.constraint_name
-        
-        WHERE con.constraint_type = 'FOREIGN KEY' AND con.table_name = '{tableName}';
+        SELECT 
+            conrelid::regclass AS table_name,
+            a.attname AS column_name,
+            confrelid::regclass AS foreign_table_name,
+            af.attname AS foreign_column_name
+        FROM pg_constraint AS c
+        JOIN pg_attribute AS a ON a.attnum = ANY(c.conkey) AND a.attrelid = c.conrelid
+        JOIN pg_attribute AS af ON af.attnum = ANY(c.confkey) AND af.attrelid = c.confrelid
+        WHERE confrelid IS NOT NULL and conrelid::regclass::text = '{tableName}';
     ''')
 
     results = db.execute(query)

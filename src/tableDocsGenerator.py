@@ -1,8 +1,11 @@
 def createH1(text):
     return f'# {text}\n'
 
-def createTableInMD(tableCols, references):
-    markdown = '\n<details><summary>Table References</summary>'
+def addBreak():
+    return '\n<br>\n'
+
+def createTableInMD(summaryTxt, tableCols, references):
+    markdown = f'\n<details><summary>{summaryTxt}</summary>'
 
     markdown += '\n|'
     for column in tableCols:
@@ -20,3 +23,6 @@ def createTableInMD(tableCols, references):
     markdown += '\n</details>\n\n'
 
     return markdown
+
+def createBulletPoint(text):
+    return f'- {text}\n'
