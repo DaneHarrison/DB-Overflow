@@ -16,7 +16,7 @@ def getTables(db, schema='public'):
 
 def getTableColumns(db, tableName):
     query = sq.text(f'''
-        SELECT column_name
+        SELECT column_name, data_type
         FROM information_schema.columns
         WHERE table_name = '{tableName}';
     ''')

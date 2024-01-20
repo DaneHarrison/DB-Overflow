@@ -5,8 +5,9 @@ from database.db import DB
 from database.queries import getTables, getTableReferences
 from tableDocsGenerator import createH1, addBreak, createTableInMD
 
+
 COL_SUMMARY_TABLE_TXT = 'Table Columns'
-COL_TABLE_COLS = ['Columns']
+COL_TABLE_COLS = ['Columns', 'Data Type']
 REF_SUMMARY_TABLE_TXT = 'Table References'
 REF_TABLE_COLS = [
     'Table with Foreign key',
@@ -14,7 +15,6 @@ REF_TABLE_COLS = [
     'Referenced table',
     'Referenced column'
 ]
-
 
 load_dotenv("../deployment/.env")
 PG_USER = os.getenv("POSTGRES_USER")
@@ -25,9 +25,9 @@ PG_PORT = int(os.getenv("POSTGRES_PORT"))
 if not PG_DB or not PG_ADDR or not PG_PORT or not PG_USER or not PG_PW:
     raise ValueError("[ERROR] Environment variables not detected")
 
+
 db = DB(PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW)
 conn = db.connect()
-
 
 tables = getTables(db)
 file = open("../output/referencingTables.md", "w")
