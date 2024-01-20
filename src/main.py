@@ -2,8 +2,8 @@ from dotenv import load_dotenv
 import os
 
 from database.db import DB
-from database.queries import getTables, getTableReferences
-from tableDocsGenerator import createH1, addBreak, createTableInMD
+from database.queries import getTables, getTableColumns, getTableReferences
+from mdDocsGenerator import createH2, createBreak, createTable, createBulletPoint, createSelfReference
 
 
 COL_SUMMARY_TABLE_TXT = 'Table Columns'
@@ -12,11 +12,11 @@ REF_SUMMARY_TABLE_TXT = 'Table References'
 REF_TABLE_COLS = [
     'Table with Foreign key',
     'Column with Foreign key',
-    'Referenced table',
-    'Referenced column'
+    'Referenced Table',
+    'Referenced Column'
 ]
 
-load_dotenv("../deployment/.env")
+load_dotenv("../.env")
 PG_USER = os.getenv("POSTGRES_USER")
 PG_PW = os.getenv("POSTGRES_PW")
 PG_DB = os.getenv("POSTGRES_DB")
@@ -32,21 +32,23 @@ conn = db.connect()
 tables = getTables(db)
 file = open("../output/referencingTables.md", "w")
 for table in tables:
-    references = getTableReferences(db, table)
-    columns = getTableColumns(db, table)
-    
-    #addReference(references, [2])# add link to third entry per reference
+    table = table[0]
 
-    file.write(createH1(table))
+    references = getTableReferences(db, table)
+    references = createSelfReference(references, [2])
+    columns = getTableColumns(db, table)
+
+    file.write(createH2(table))
     file.write(createBulletPoint('Schema: public')) 
     file.write(createBulletPoint(f'Number of Columns: {len(columns)}')) 
 
     if columns:
-        file.write(createTableInMD(COL_SUMMARY_TABLE_TXT, COL_TABLE_COLS, columns))
+        file.write(createTable(COL_SUMMARY_TABLE_TXT, COL_TABLE_COLS, columns))
     if references:
-        file.write(createTableInMD(REF_SUMMARY_TABLE_TXT, TABLE_COLS, references))
+        file.write(createTable(REF_SUMMARY_TABLE_TXT, REF_TABLE_COLS, references))
 
-    file.write(addBreak())
+    file.write(createBreak())
+
 
 file.close()
 db.cleanup()

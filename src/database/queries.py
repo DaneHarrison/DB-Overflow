@@ -6,7 +6,8 @@ def getTables(db, schema='public'):
         SELECT table_name
         FROM information_schema.tables
         WHERE table_schema = '{schema}'
-        AND table_type = 'BASE TABLE';
+        AND table_type = 'BASE TABLE'
+        ORDER BY table_name;
     ''')
 
     results = db.execute(query)
@@ -18,7 +19,8 @@ def getTableColumns(db, tableName):
     query = sq.text(f'''
         SELECT column_name, data_type
         FROM information_schema.columns
-        WHERE table_name = '{tableName}';
+        WHERE table_name = '{tableName}'
+        ORDER BY column_name;
     ''')
 
     results = db.execute(query)
@@ -40,7 +42,8 @@ def getTableReferences(db, tableName):
         JOIN pg_attribute AS af 
             ON af.attnum = ANY(c.confkey) AND af.attrelid = c.confrelid
 
-        WHERE confrelid IS NOT NULL and conrelid::regclass::text = '{tableName}';
+        WHERE confrelid IS NOT NULL and conrelid::regclass::text = '{tableName}'
+        ORDER BY a.attname;
     ''')
 
     results = db.execute(query)

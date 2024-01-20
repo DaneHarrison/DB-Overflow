@@ -1,3 +1,4 @@
 .env
 env
-output/**
+output/**.md
+__pycache__
