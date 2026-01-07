@@ -28,7 +28,7 @@ def createTable(summaryTxt, tableCols, references):
 def createBulletPoint(text):
     return f'- {text}\n'
 
-def createSelfReference(data, listPosi=None):
+def createReferenceLinks(data, listPosi=None):
     results = []
 
     if not listPosi:

@@ -3,7 +3,7 @@ import os
 
 from database.db import DB
 from database.queries import getTables, getTableColumns, getTableReferences
-from mdDocsGenerator import createH2, createBreak, createTable, createBulletPoint, createSelfReference
+from mdDocsGenerator import createH2, createBreak, createTable, createBulletPoint, createReferenceLinks
 
 
 DOCS_SAVE_LOC = '../output/dbDocs.md'
@@ -36,7 +36,7 @@ for table in tables:
     table = table[0]
 
     references = getTableReferences(db, table)
-    references = createSelfReference(references, [2])
+    references = createReferenceLinks(references, [2])
     columns = getTableColumns(db, table)
 
     file.write(createH2(table))
